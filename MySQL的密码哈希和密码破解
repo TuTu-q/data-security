@@ -1,0 +1,11 @@
+密码哈希
+在MySQL 4.1之前，由PASSWORD（）函数计算的密码哈希长度为16个字节。这样的哈希看起来像这样：
+PASSWORD（ '为mypass'）	6f8c114b58f2ce9e
+从MySQL 4.1开始，PASSWORD（）函数已被修改为产生更长的41字节哈希值：
+PASSWORD（ '为mypass'）	* 6C8989366EAF75BB670AD8EA7A7FC1176A95CEF4
+	
+密码破解
+Cain＆Abel和John the Ripper都能够破解MySQL 3.x-6.x密码。
+可以在此处找到JTR的Metasploit模块。
+MySQL <4.1密码破解程序
+这个工具是一个用于MySQL哈希密码的高速暴力密码破解程序。它可以在普通PC上在几小时内打破包含任何可打印ASCII字符的8个字符的密码。
