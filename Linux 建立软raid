@@ -1,0 +1,33 @@
+一、Raid定义
+RAID,全称Redundant Array ofInexpensive Disks,中文名为廉价磁盘冗余阵列。RAID可分为软RAID和硬RAID,软RAID是通过软件实现多块硬盘冗余的。而硬RAID是一般通过RAID卡来实现RAID的。前者配置简单，管理也比较灵活。对于中小企业来说不失为一最佳选择。硬RAID往往花费比较贵。不过，在性能方面具有一定优势。
+RAID可分为以下几类：
+RAID 0 ：存取速度最快 没有容错
+RAID 1 ：完全容错 成本高，硬盘使用率低
+RAID 3 ：写入性能最好 没有多任务功能
+RAID 5 ：具备多任务及容错功能 写入时有overhead
+RAID 0+1 ：速度快、完全容错 成本高
+二、Linux RAID 5 实验详解
+（注：以下linux命令中如果提示权限不够，请在命令前加sudo）
+1、添加4块硬盘
+可以用虚拟机设置出4块硬盘出来。在虚拟机上添加硬盘，一直采用默认设置。
+添加后，linux重启才能识别
+可以用fdisk –l命令查看到
+添加的四块硬盘分别为
+/dev/sdb
+/dev/sdc
+/dev/sdd
+/dev/sde。
+2、分区
+比如对/dev/sdb分区：
+fdisk /dev/sdb
+ 
+其它分区照这样做全部分出一个区出来。下面命令显示所有分区信息：
+fdisk –l
+会看到出现/dev/sdb1 /dev/sdc1 /dev/sdd1 /dev/sde1
+3、创建RAID
+安装mdadm软件, yum install mdadm。
+ 
+mdadm –create /dev/md0 –level=5 –n4 /dev/sdb1 /dev/sdc1 /dev/sdd1 /dev/sde1
+  #意思是创建RAID设备名为md0, 级别为RAID 5,采用了四块磁盘，分别是/dev/sdb1 /dev/sdc1 /dev/sdd1 /dev/sde1,这样初步建立了RAID了。
+mdadm –detail /dev/md0 #查看当前Raid详情。
+ 
